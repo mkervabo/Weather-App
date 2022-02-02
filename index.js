@@ -1,3 +1,4 @@
+const wcc = require('world-countries-capitals')
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -13,13 +14,13 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 	socket.on('chat message', (msg) => {
-		const request = require('request');
-
+		country = wcc.getCountryDetailsByName(wcc.getRandomCountry());
+		
 		const options = {
 			method: 'GET',
 			url: 'https://community-open-weather-map.p.rapidapi.com/weather',
 			qs: {
-				q: `${msg}`,
+				q: `${country[0].capital}`,
 				units: 'metric',
 			},
 			headers: {
@@ -32,8 +33,11 @@ io.on('connection', (socket) => {
 		request(options, function (error, response, body) {
 			if (error) throw new Error(error);
 
+			const weatherInfo = JSON.parse(body);
+
 			io.emit('chat message', body);
 		});
+		// io.emit('chat message', msg);
 	});
 });
 
