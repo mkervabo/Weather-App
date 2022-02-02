@@ -4,12 +4,17 @@
     <link rel="stylesheet" href="/main.css" >
     <title>Weather App</title>
   <body>
-    <h1 id="city"></h1>
-		<div>
-			<div id="weatherDes"></div>
-			<div id="temp"></div>
-			<div id="humidity"></div>
-			<div></div>
+		<div class="illustration">
+			<div class="information">
+				<div id="city"></div>
+				<div>
+					<div id="temp"></div>
+					<div id="humidity"></div>
+					<div id="weather"></div>
+					<div id="weatherDes"></div>
+					<div></div>
+				</div>
+			</div>
 		</div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
@@ -24,9 +29,10 @@
 			const humidity = json.main.humidity;
 
 			document.getElementById("city").innerHTML = city;
+			document.getElementById("temp").innerHTML = temp + '°';
+			document.getElementById("humidity").innerHTML = humidity + '%';
+			document.getElementById("weather").innerHTML = weather;
 			document.getElementById("weatherDes").innerHTML = weatherDes;
-			document.getElementById("temp").innerHTML = temp;
-			document.getElementById("humidity").innerHTML = humidity;
 
 		});
 	</script>	
