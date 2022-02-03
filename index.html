@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/main.css" >
     <title>Weather App</title>
   <body>
-		<div class="illustration">
+		<canva class="illustration">
 			<div class="information">
 				<div id="city"></div>
 				<div>
@@ -15,13 +15,13 @@
 					<div></div>
 				</div>
 			</div>
-		</div>
+		</canva>
   </body>
   <script src="/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io();
 
-		socket.on('weather info', function(json) {
+		function readInfo (json) {
 			const city = json.name; 
 			const temp = json.main.temp;
 			const weather = json.weather[0].main;
@@ -33,6 +33,16 @@
 			document.getElementById("humidity").innerHTML = humidity + '%';
 			document.getElementById("weather").innerHTML = weather;
 			document.getElementById("weatherDes").innerHTML = weatherDes;
+		}
+
+		function drawCanva (){
+			const canvas = document.getElementById('illustration');
+			const context = canvas.getContext('2d');
+		}
+		
+		socket.on('weather info', function(json) {
+			readInfo(json);
+			drawCanva()
 
 		});
 	</script>	
