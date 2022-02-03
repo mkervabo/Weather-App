@@ -19,8 +19,67 @@
 		</div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
+	<!-- <script src="/canvas.js"></script> -->
 	<script>
 		const socket = io();
+
+		function drawHill(ctx, x, y, radius) {
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, Math.PI, true);
+			ctx.fill();
+		}
+
+		function drawHills (ctx) {
+			ctx.shadowColor = 'black';
+			ctx.shadowBlur = 10;
+			ctx.fillStyle = "#6B8E23";
+			drawHill(ctx, 120, 360, 140);
+			drawHill(ctx, 300, 350, 145);
+			ctx.fillStyle = "#9ACD32";
+			drawHill(ctx, 40, 400, 120, 0);
+			drawHill(ctx, 200, 400, 130);
+			drawHill(ctx, 350, 400, 120);
+		}
+
+		function drawSun (ctx) {
+			ctx.shadowColor = '#ffffff';
+			ctx.fillStyle = " #FDB813";
+			ctx.beginPath()
+			ctx.arc(80, 80, 40, 0, 2 * Math.PI, true);
+			ctx.fill();
+		}
+
+		function drawClouds (ctx) {
+			ctx.shadowBlur = 5;
+			const cloudPos = [ [200, 90], [120, 100], [300, 100]]
+			ctx.shadowColor = '#dcdbd4';
+			ctx.fillStyle = '#ffffff';
+			for (const pos of cloudPos) {
+				ctx.beginPath();
+				ctx.arc(pos[0], pos[1], 30, Math.PI * 0.5, Math.PI * 1.5);
+				ctx.arc(pos[0] + 35, pos[1] - 30, 35, Math.PI * 1, Math.PI * 1.85);
+				ctx.arc(pos[0] + 76, pos[1] - 22, 25, Math.PI * 1.37, Math.PI * 1.91);
+				ctx.arc(pos[0] + 100, pos[1], 30, Math.PI * 1.5, Math.PI * 0.5);
+				ctx.moveTo(pos[0] + 100, pos[1] + 30);
+				ctx.lineTo(pos[0], pos[1] + 30);
+				
+				ctx.fill()
+			}
+		}
+
+		function drawCanvas () {
+			const canvas = document.getElementById("illustration");
+			canvas.width = 400;
+			canvas.height = 400;
+			const ctx = canvas.getContext("2d");
+
+			ctx.fillStyle = '#48b4e0';
+
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			drawHills (ctx);
+			drawSun (ctx);
+			drawClouds(ctx);
+		}
 
 		function readInfo (json) {
 			const city = json.name; 
@@ -36,55 +95,8 @@
 			document.getElementById("weatherDes").innerHTML = weatherDes;
 		}
 
-		function drawCanvas (){
-			const canvas = document.getElementById("illustration");
-			canvas.width = 400;
-			canvas.height = 400;
-			const ctx = canvas.getContext("2d");
-			// console.log (ctx);
-
-
-			//background
-			ctx.fillStyle = '#48b4e0';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-			//hills
-			ctx.fillStyle = "#503760";
-			ctx.beginPath()
-			ctx.arc(120, 360, 140, 0, Math.PI, true);
-			ctx.arc(300, 350, 145, 0, Math.PI, true);
-			ctx.fill();	
-			ctx.fillStyle = "#8ED6FF";
-			ctx.beginPath()
-			ctx.arc(40, 400, 120, 0, Math.PI, true);
-			ctx.arc(200, 400, 130, 0, Math.PI, true);
-			ctx.arc(350, 400, 120, 0, Math.PI, true);
-			ctx.fill();
-
-			//sun
-			ctx.fillStyle = "#503760";
-			ctx.beginPath()
-			ctx.arc(80, 80, 40, 0, 2 * Math.PI, true);
-			ctx.fill();
-
-			//cloud
-			const cloudPos = [ [200, 90], [120, 100], [300, 100]]
-			for (const pos of cloudPos) {
-				ctx.beginPath();
-				ctx.arc(pos[0], pos[1], 30, Math.PI * 0.5, Math.PI * 1.5);
-				ctx.arc(pos[0] + 35, pos[1] - 30, 35, Math.PI * 1, Math.PI * 1.85);
-				ctx.arc(pos[0] + 76, pos[1] - 22, 25, Math.PI * 1.37, Math.PI * 1.91);
-				ctx.arc(pos[0] + 100, pos[1], 30, Math.PI * 1.5, Math.PI * 0.5);
-				ctx.moveTo(pos[0] + 100, pos[1] + 30);
-				ctx.lineTo(pos[0], pos[1] + 30);
-				ctx.fillStyle = '#8ED6FF';
-				ctx.fill()
-			}
-
-		}
-		
 		socket.on('weather info', function(json) {
-			readInfo(json);
+			// readInfo(json);
 			drawCanvas()
 		});
 
