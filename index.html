@@ -4,8 +4,9 @@
     <link rel="stylesheet" href="/main.css" >
     <title>Weather App</title>
   <body>
-		<canva class="illustration">
-			<div class="information">
+		<div id="widget">
+			<canvas id="illustration"></canvas>
+			<div id="information">
 				<div id="city"></div>
 				<div>
 					<div id="temp"></div>
@@ -15,11 +16,11 @@
 					<div></div>
 				</div>
 			</div>
-		</canva>
+		</div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
 	<script>
-		var socket = io();
+		const socket = io();
 
 		function readInfo (json) {
 			const city = json.name; 
@@ -35,15 +36,57 @@
 			document.getElementById("weatherDes").innerHTML = weatherDes;
 		}
 
-		function drawCanva (){
-			const canvas = document.getElementById('illustration');
-			const context = canvas.getContext('2d');
+		function drawCanvas (){
+			const canvas = document.getElementById("illustration");
+			canvas.width = 400;
+			canvas.height = 400;
+			const ctx = canvas.getContext("2d");
+			// console.log (ctx);
+
+
+			//background
+			ctx.fillStyle = '#48b4e0';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+			//hills
+			ctx.fillStyle = "#503760";
+			ctx.beginPath()
+			ctx.arc(120, 360, 140, 0, Math.PI, true);
+			ctx.arc(300, 350, 145, 0, Math.PI, true);
+			ctx.fill();	
+			ctx.fillStyle = "#8ED6FF";
+			ctx.beginPath()
+			ctx.arc(40, 400, 120, 0, Math.PI, true);
+			ctx.arc(200, 400, 130, 0, Math.PI, true);
+			ctx.arc(350, 400, 120, 0, Math.PI, true);
+			ctx.fill();
+
+			//sun
+			ctx.fillStyle = "#503760";
+			ctx.beginPath()
+			ctx.arc(80, 80, 40, 0, 2 * Math.PI, true);
+			ctx.fill();
+
+			//cloud
+			const cloudPos = [ [200, 90], [120, 100], [300, 100]]
+			for (const pos of cloudPos) {
+				ctx.beginPath();
+				ctx.arc(pos[0], pos[1], 30, Math.PI * 0.5, Math.PI * 1.5);
+				ctx.arc(pos[0] + 35, pos[1] - 30, 35, Math.PI * 1, Math.PI * 1.85);
+				ctx.arc(pos[0] + 76, pos[1] - 22, 25, Math.PI * 1.37, Math.PI * 1.91);
+				ctx.arc(pos[0] + 100, pos[1], 30, Math.PI * 1.5, Math.PI * 0.5);
+				ctx.moveTo(pos[0] + 100, pos[1] + 30);
+				ctx.lineTo(pos[0], pos[1] + 30);
+				ctx.fillStyle = '#8ED6FF';
+				ctx.fill()
+			}
+
 		}
 		
 		socket.on('weather info', function(json) {
 			readInfo(json);
-			drawCanva()
-
+			drawCanvas()
 		});
+
 	</script>	
 </html>
