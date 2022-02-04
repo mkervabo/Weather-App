@@ -39,9 +39,9 @@
 			drawHill(ctx, 350, 400, 120);
 		}
 
-		function drawSun (ctx) {
+		function drawSun (ctx, color) {
 			ctx.shadowColor = '#ffffff';
-			ctx.fillStyle = "#FDB813";
+			ctx.fillStyle = color;
 			ctx.beginPath()
 			ctx.arc(80, 80, 40, 0, 2 * Math.PI, true);
 			ctx.fill();
@@ -76,7 +76,7 @@
 			}
 			ctx.fill();
 		}
-		
+
 		function drawSnow (ctx, width, height) {
 			const mp = 100;
 			const particles = [];
@@ -99,7 +99,7 @@
 			for(let i = 0; i < mp; i++)
 			{
 				const p = particles[i];
-        		ctx.moveTo(p.x - 3, p.y);
+				ctx.moveTo(p.x - 3, p.y);
 				ctx.lineTo(p.x, p.y - 5);
 				ctx.lineTo(p.x + 3, p.y);
 				ctx.arc(p.x, p.y, 3, 0, Math.PI);		
@@ -124,28 +124,34 @@
 			let scene = {};
 			const weather = json.weather[0].main;
 			const temp = json.main.temp;
-			const cloud = json.clouds.all;
-
-			scene.cloud = { show: false, color: '#ffffff' };
-			if (cloud > 10)
-			{
-				scene.cloud.show = true;
-				if (weather == "Rain" || weather == "Thunderstorm" || weather == "Storm" || weather == "Fog"
-				 || temp < 0 || "rain" in json)
-					scene.cloud.color = '#cfcfc4';
-				else if (weather == "Smoke")
-					scene.cloud.color = '#9a9a9a';
-			}
+			const night = true; 
 			
-			scene.color = '#48b4e0';
-			if (weather == "Rain" || weather == "Fog" || weather == "Smoke" || temp <= 0 || "rain" in json)
-				scene.color = '#92BAD2';
+			if (night) {
+				scene.color = '#131862';
+				scene.sun = '#91a3b0';
+				scene.cloud = '#546bab';
+				scene.hill = ['#2e4482', '#546bab'];
 				
-			scene.hill = {color: ["#6B8E23", "#9ACD32"]};
-			if (temp < 0)
-				scene.hill.color = ['#dcdbd4', "#ffffff"];
-			if (temp > 34)
-				scene.hill.color = ['#a69150', "#c2b280"];
+			}
+			else {
+				scene.color = '#48b4e0';
+				scene.sun = "#FDB813";
+				if (weather == "Rain" || weather == "Fog" || weather == "Smoke" || temp <= 0 || "rain" in json)
+					scene.color = '#92BAD2';
+					
+				scene.cloud =  '#ffffff';
+				if (weather == "Rain" || weather == "Thunderstorm" || weather == "Storm" || weather == "Fog"
+				|| temp < 0 || "rain" in json)
+					scene.cloud = '#cfcfc4';
+				else if (weather == "Smoke")
+					scene.cloud = '#9a9a9a';
+				
+				scene.hill = ["#6B8E23", "#9ACD32"];
+				if (temp < 0)
+					scene.hill = ['#dcdbd4', "#ffffff"];
+				if (temp > 34)
+					scene.hill = ['#a69150', "#c2b280"];
+			}
 
 			return scene;
 		}
@@ -161,14 +167,14 @@
 
 			ctx.fillStyle = scene.color;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			drawHills (ctx, scene.hill.color);
-			drawSun(ctx);
+			drawHills (ctx, scene.hill);
+			drawSun(ctx, scene.sun);
 			if (weather == "Rain" || "rain" in json) 
 				drawRain(ctx, canvas.width, canvas.height);
 			if (weather == "Snow" || "snow" in json)
 				drawSnow(ctx, canvas.width, canvas.height);
-			if (scene.cloud.show == true)
-				drawClouds(ctx, scene.cloud.color);
+			if (json.clouds.all > 10)
+				drawClouds(ctx, scene.cloud);
 		}
 
 		function readInfo (json) {
