@@ -17,18 +17,18 @@ function drawHills (ctx, color) {
 	drawHill(ctx, 350, 400, 120);
 }
 
-function drawSun (ctx, color) {
-	ctx.shadowColor = '#ffffff';
+function drawSun (ctx, color, shadow) {
+	ctx.shadowColor = shadow;
 	ctx.fillStyle = color;
 	ctx.beginPath()
 	ctx.arc(80, 80, 40, 0, 2 * Math.PI, true);
 	ctx.fill();
 }
 
-function drawClouds (ctx, color) {
+function drawClouds (ctx, color, shadow) {
 	ctx.shadowBlur = 5;
 	const cloudPos = [ [200, 90], [120, 100], [300, 100] ];
-	ctx.shadowColor = '#dcdbd4';
+	ctx.shadowColor = shadow;
 	ctx.fillStyle = color;
 	for (const pos of cloudPos) {
 		ctx.beginPath();
@@ -45,6 +45,7 @@ function drawClouds (ctx, color) {
 
 function drawSnowFlakes (ctx, mp, particles) {
 	ctx.fillStyle = '#ffffff';
+	ctx.shadowColor = '#dcdbd4';
 	ctx.beginPath();
 	for(let i = 0; i < mp; i++)
 	{
@@ -72,7 +73,7 @@ function drawSnow (ctx, width, height) {
 
 function drawRainDrop (ctx, mp, particles) {
 	ctx.shadowBlur = 0;
-	ctx.fillStyle = '#1E90FF';
+	ctx.fillStyle = '#87ceeb;';
 	ctx.beginPath();
 	for(let i = 0; i < mp; i++)
 	{
@@ -107,17 +108,21 @@ function defineColors (json) {
 	if (date < json.sys.sunrise || date > json.sys.sunset) {
 		scene.color = '#131862';
 		scene.sun = '#91a3b0';
+		scene.sunShadow = 'black';
 		scene.cloud = '#546bab';
+		scene.cloudShadow = 'black';
 		scene.hill = ['#2e4482', '#546bab'];
 		
 	}
 	else {
 		scene.color = '#48b4e0';
 		scene.sun = "#FDB813";
+		scene.sunShadow = '#ffffff';
 		if (weather == "Rain" || weather == "Fog" || weather == "Smoke" || temp <= 0 || "rain" in json)
 			scene.color = '#92BAD2';
 			
 		scene.cloud =  '#ffffff';
+		scene.cloudShadow = '#dcdbd4'
 		if (weather == "Rain" || weather == "Thunderstorm" || weather == "Storm" || weather == "Fog"
 		|| temp < 0 || "rain" in json)
 			scene.cloud = '#cfcfc4';
@@ -146,11 +151,11 @@ function drawCanvas (json) {
 	ctx.fillStyle = scene.color;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	drawHills (ctx, scene.hill);
-	drawSun(ctx, scene.sun);
+	drawSun(ctx, scene.sun, scene.sunShadow);
 	if (weather == "Rain" || "rain" in json) 
 		drawRain(ctx, canvas.width, canvas.height);
 	if (weather == "Snow" || "snow" in json)
 		drawSnow(ctx, canvas.width, canvas.height);
 	if (json.clouds.all > 10)
-		drawClouds(ctx, scene.cloud);
+		drawClouds(ctx, scene.cloud, scene.cloudShadow);
 }
