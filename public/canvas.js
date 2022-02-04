@@ -102,9 +102,9 @@ function defineColors (json) {
 	let scene = {};
 	const weather = json.weather[0].main;
 	const temp = json.main.temp;
-	const night = true; 
-	
-	if (night) {
+	const date = Math.round(Date.now() / 1000) - json.timezone;
+
+	if (date < json.sys.sunrise || date > json.sys.sunset) {
 		scene.color = '#131862';
 		scene.sun = '#91a3b0';
 		scene.cloud = '#546bab';
