@@ -129,7 +129,6 @@
 			scene.cloud = { show: false, color: '#ffffff' };
 			if (cloud > 10)
 			{
-				console.log("coucou");
 				scene.cloud.show = true;
 				if (weather == "Rain" || weather == "Thunderstorm" || weather == "Storm" || weather == "Fog"
 				 || temp < 0 || "rain" in json)
@@ -190,6 +189,11 @@
 			readInfo(json);
 			drawCanvas(json);
 		});
+
+		socket.emit('ping');
+		setInterval(() => {
+			socket.emit('ping');
+		}, 30000);	
 
 	</script>	
 </html>

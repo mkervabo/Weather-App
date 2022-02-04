@@ -11,10 +11,6 @@ const io = new Server(server);
 
 app.use(express.static(path.join(__dirname, '/public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
 function getWeather () {
 	country = wcc.getCountryDetailsByName(wcc.getRandomCountry());
 
@@ -42,10 +38,9 @@ function getWeather () {
 };
 
 io.on('connection', (socket) => {
-	getWeather();
-	setInterval(() => {
-		getWeather()},
-		30000);	
+	socket.on('ping', () => {
+		getWeather();
+	})
 });
 
 server.listen(3000, () => {
