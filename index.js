@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
 const request = require('request');
 
 const io = new Server(server);
@@ -23,15 +23,16 @@ function getWeather () {
 		},
 		headers: {
 			'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
-			'x-rapidapi-key': '[your rapidapi key]',
+			'x-rapidapi-key': process.env.RAPID_KEY,
 			useQueryString: true
 		}
 	};
 
-	request(options, function (error, response, body) {
+	request(options, (error, response, body) => {
 		if (error) throw new Error(error);
 
 		const weatherInfo = JSON.parse(body);
+		console.log(weatherInfo);
 		io.emit('weather info', weatherInfo);
 	});
 	

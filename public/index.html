@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/main.css" >
+    <link rel='stylesheet' href='/main.css' >
     <title>Weather App</title>
-	<script src="https://kit.fontawesome.com/5de744e390.js" crossorigin="anonymous"></script>
+	<script src='https://kit.fontawesome.com/5de744e390.js' crossorigin='anonymous'></script>
   <body>
-		<div id="widget">
-			<canvas id="illustration"></canvas>
-			<div id="information">
-				<div id="city"></div>
+		<div id='widget'>
+			<canvas id='illustration'></canvas>
+			<div id='information'>
+				<div id='city'></div>
 				<div>
-					<i class="fa fa-thermometer-half fa-2x" aria-hidden="true"></i>
-					<div id="temp"></div>
-					<i class="fa fa-tint fa-2x" aria-hidden="true"></i>
-					<div id="humidity"></div>
-					<div id="weather"></div>
-					<div id="weatherDes"></div>
+					<i class='fa fa-thermometer-half fa-2x termomether' aria-hidden='true'></i>
+					<div id='temp'></div>
+					<i class='fa fa-tint fa-2x drop' aria-hidden='true'></i>
+					<div id='humidity'></div>
+					<div id='weather'></div>
+					<div id='weatherDes'></div>
 				</div>
 			</div>
 		</div>
   </body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/canvas.js"></script>
+  <script src='/socket.io/socket.io.js'></script>
+  <script src='/canvas.js'></script>
 	<script>
 		const socket = io();
 
@@ -32,14 +32,14 @@
 			const weatherDes = json.weather[0].description;
 			const humidity = json.main.humidity;
 
-			document.getElementById("city").innerHTML = city;
-			document.getElementById("temp").innerHTML = temp + '°';
-			document.getElementById("humidity").innerHTML = humidity + '%';
-			document.getElementById("weather").innerHTML = weather;
-			document.getElementById("weatherDes").innerHTML = weatherDes;
+			document.getElementById('city').innerHTML = city;
+			document.getElementById('temp').innerHTML = temp + '°';
+			document.getElementById('humidity').innerHTML = humidity + '%';
+			document.getElementById('weather').innerHTML = weather;
+			document.getElementById('weatherDes').innerHTML = weatherDes;
 		}
 
-		socket.on('weather info', function(json) {
+		socket.on('weather info', (json) => {
 			readInfo(json);
 			drawCanvas(json);
 		});
@@ -48,6 +48,5 @@
 		setInterval(() => {
 			socket.emit('ping');
 		}, 30000);	
-
 	</script>	
 </html>

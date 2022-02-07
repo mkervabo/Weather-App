@@ -43,7 +43,7 @@ i {
 	color: #87ceeb;
 }
 
-.fa-thermometer-half
+.termomether
 {
 	position: absolute;
 	left: 100px;
@@ -58,7 +58,7 @@ i {
 	font-size: 17px;
 }
 
-.fa-tint {
+.drop {
 	position: absolute;
 	left: 97px;
 	top: 75px;

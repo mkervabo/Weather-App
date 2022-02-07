@@ -6,7 +6,6 @@
 		"express": "^4.17.2",
 		"request": "^2.88.2",
 		"socket.io": "^4.4.1",
-		"world-countries-capital": "^2.2.0",
 		"world-countries-capitals": "^3.4.0"
 	}
 }
