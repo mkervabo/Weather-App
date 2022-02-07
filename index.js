@@ -32,7 +32,6 @@ function getWeather () {
 		if (error) throw new Error(error);
 
 		const weatherInfo = JSON.parse(body);
-		console.log(weatherInfo);
 		io.emit('weather info', weatherInfo);
 	});
 	
