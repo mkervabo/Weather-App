@@ -14,3 +14,5 @@ To run the code, you need to subscribe to the [open weather map API](https://rap
 ```
  RAPID_KEY="[your rapidapi key]" npm start
 ```
+
+Open your browser on http://localhost:3000/
