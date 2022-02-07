@@ -9,7 +9,7 @@ npm install
 
 ### Run the code
 
-To run the code, you need to subscribe to the open [weather map API](https://rapidapi.com/community/api/open-weather-map) and get an API key.
+To run the code, you need to subscribe to the [open weather map API](https://rapidapi.com/community/api/open-weather-map) and get an API key.
 
 ```
  RAPID_KEY="[your rapidapi key]" npm start
