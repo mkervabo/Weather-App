@@ -73,7 +73,7 @@ function drawSnow (ctx, width, height) {
 
 function drawRainDrop (ctx, mp, particles) {
 	ctx.shadowBlur = 0;
-	ctx.fillStyle = '#87ceeb';
+	ctx.fillStyle = '#87CEEB';
 	ctx.beginPath();
 	for(let i = 0; i < mp; i++)
 	{
@@ -108,14 +108,14 @@ function defineColors (json) {
 	if (date < json.sys.sunrise || date > json.sys.sunset) {
 		scene.color = '#131862';
 		scene.sun = '#91A3B0';
-		scene.sunShadow = 'black';
+		scene.sunShadow = '#000000';
 		scene.cloud = '#546BAB';
 		scene.cloudShadow = '#000000';
 		scene.hill = ['#2E4482', '#546BAB'];
 		
 	}
 	else {
-		scene.color = '#48b4E0';
+		scene.color = '#48B4E0';
 		scene.sun = '#FDB813';
 		scene.sunShadow = '#ffffff';
 		if (weather == 'Rain' || weather == 'Fog' || weather == 'Smoke' || temp <= 0 || 'rain' in json)
