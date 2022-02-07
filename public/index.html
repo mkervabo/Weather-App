@@ -40,8 +40,12 @@
 		}
 
 		socket.on('weather info', (json) => {
-			readInfo(json);
-			drawCanvas(json);
+			if (json.cod == 404)
+				document.getElementById('city').innerHTML = json.message;
+			else {
+				readInfo(json);
+				drawCanvas(json);
+			}
 		});
 
 		socket.emit('ping');
